@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MovieClubX.Entities.Dto
 {
-    public class MovieCreateUpdateDto
+    public class RateViewDto
     {
-        public string Title { get; set; } = "";
-        public string Genre { get; set; } = "";
+        public string? Text { get; set; }
+        public int Value { get; set; }
     }
 }

@@ -1,40 +1,60 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Humanizer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieClubX.Data;
+using MovieClubX.Endpoint.Helpers;
 using MovieClubX.Entities.Dto;
 using MovieClubX.Entities.Entity;
+using SlugGenerator;
+using System.Security.Cryptography;
 
 namespace MovieClubX.Endpoint.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MovieController
+    public class MovieController : ControllerBase
     {
         MovieClubContext ctx;
+        Mapper mapper;
 
-        public MovieController(MovieClubContext ctx)
+        public MovieController(MovieClubContext ctx, DtoProvider provider)
         {
             this.ctx = ctx;
+            this.mapper = provider.Mapper;
         }
 
         [HttpGet]
         public IEnumerable<MovieViewDto> Get()
         {
-            return ctx.Movies.Select(t => new MovieViewDto
-            {
-                Id = t.Id,
-                Title = t.Title,
-                Rate = t.Rate
-            });
+            //return ctx.Movies.Select(t => new MovieViewDto
+            //{
+            //    Id = t.Id,
+            //    Title = t.Title,
+            //    Rate = t.Rate
+            //});
+            return ctx.Movies.Select(t => mapper.Map<MovieViewDto>(t));
+        }
+
+        [HttpGet("Short")]
+        public IEnumerable<MovieShortViewDto> GetShort()
+        {
+            return ctx.Movies.Select(t => mapper.Map<MovieShortViewDto>(t));
         }
 
         [HttpPost]
         public void Post(MovieCreateUpdateDto dto)
         {
-            var movie = new Movie
-            {
-                Title = dto.Title,
-                Rate = dto.Rate
-            };
+            //var movie = new Movie
+            //{
+            //    Title = dto.Title,
+            //    Rate = dto.Rate
+            //};
+            var movie = mapper.Map<Movie>(dto);
+
+            //barátságos url -> majd id-nak használjuk
+            //var slug = SlugGenerator.SlugGenerator.GenerateSlug(dto.Title);
+
 
             ctx.Movies.Add(movie);
             ctx.SaveChanges();
@@ -57,8 +77,7 @@ namespace MovieClubX.Endpoint.Controllers
             var movieToUpdate = ctx.Movies.FirstOrDefault(m => m.Id == id);
             if (movieToUpdate != null)
             {
-                movieToUpdate.Title = dto.Title;
-                movieToUpdate.Rate = dto.Rate;
+                mapper.Map(dto, movieToUpdate);
                 ctx.SaveChanges();
             }
         }

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace MovieClubX.Entities.Dto
 {
-    public class MovieCreateUpdateDto
+    public class MovieShortViewDto
     {
+        public string Id { get; set; } = "";
         public string Title { get; set; } = "";
-        public string Genre { get; set; } = "";
+        public double AvgRate { get; set; } = 0;
+
     }
 }

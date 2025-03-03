@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MovieClubX.Data;
+using MovieClubX.Endpoint.Helpers;
 
 namespace MovieClubX.Endpoint
 {
@@ -17,10 +18,14 @@ namespace MovieClubX.Endpoint
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddTransient<DtoProvider>();
+
             builder.Services.AddDbContext<MovieClubContext>(opt => 
             {
                 //macen: Sqlite (nuget csomag is kell hozzá)
-                opt.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MovieClubDbX;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True");
+                opt
+                .UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MovieClubDbX;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True")
+                .UseLazyLoadingProxies();
             });
 
             var app = builder.Build();
