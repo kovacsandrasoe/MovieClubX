@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox ItemsSource="{Binding Movies}" />
+        <DataGrid ItemsSource="{Binding Movies}" />
     </Grid>
 </Window>
