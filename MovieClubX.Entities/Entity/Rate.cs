@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MovieClubX.Entities.Helpers;
 
 namespace MovieClubX.Entities.Entity
 {
-    public class Rate
+    public class Rate : IIdEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

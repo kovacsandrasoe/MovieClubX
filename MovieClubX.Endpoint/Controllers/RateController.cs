@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MovieClubX.Data;
-using MovieClubX.Endpoint.Helpers;
 using MovieClubX.Entities.Dto;
 using MovieClubX.Entities.Entity;
+using MovieClubX.Logic.Dto;
 
 namespace MovieClubX.Endpoint.Controllers
 {

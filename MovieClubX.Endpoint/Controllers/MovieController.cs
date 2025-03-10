@@ -3,9 +3,10 @@ using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieClubX.Data;
-using MovieClubX.Endpoint.Helpers;
 using MovieClubX.Entities.Dto;
 using MovieClubX.Entities.Entity;
+using MovieClubX.Logic;
+using MovieClubX.Logic.Dto;
 using SlugGenerator;
 using System.Security.Cryptography;
 
@@ -15,61 +16,47 @@ namespace MovieClubX.Endpoint.Controllers
     [Route("[controller]")]
     public class MovieController : ControllerBase
     {
-        MovieClubContext ctx;
-        Mapper mapper;
+        MovieLogic logic;
 
-        public MovieController(MovieClubContext ctx, DtoProvider provider)
+        public MovieController(MovieLogic logic)
         {
-            this.ctx = ctx;
-            this.mapper = provider.Mapper;
+            this.logic = logic;
         }
 
         [HttpGet]
         public IEnumerable<MovieViewDto> Get()
         {
-            return ctx.Movies.Select(t => mapper.Map<MovieViewDto>(t));
+            return logic.Read();
         }
 
         [HttpGet("{slug}")]
         public MovieViewDto Get(string slug)
         {
-            return mapper.Map<MovieViewDto>(ctx.Movies.FirstOrDefault(t => t.Slug == slug));
+            return logic.Read(slug);
         }
 
         [HttpGet("Short")]
         public IEnumerable<MovieShortViewDto> GetShort()
         {
-            return ctx.Movies.Select(t => mapper.Map<MovieShortViewDto>(t));
+            return logic.ReadShort();
         }
 
         [HttpPost]
-        public void Post(MovieCreateUpdateDto dto)
+        public async Task Post(MovieCreateUpdateDto dto)
         {
-            var movie = mapper.Map<Movie>(dto);
-            ctx.Movies.Add(movie);
-            ctx.SaveChanges();
+            await logic.Create(dto);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var movie = ctx.Movies.FirstOrDefault(m => m.Id == id);
-            if (movie != null)
-            {
-                ctx.Movies.Remove(movie);
-                ctx.SaveChanges();
-            }
+            await logic.Delete(id);
         }
 
         [HttpPut("{id}")]
-        public void Update(string id, [FromBody] MovieCreateUpdateDto dto)
+        public async Task Update(string id, [FromBody] MovieCreateUpdateDto dto)
         {
-            var movieToUpdate = ctx.Movies.FirstOrDefault(m => m.Id == id);
-            if (movieToUpdate != null)
-            {
-                mapper.Map(dto, movieToUpdate);
-                ctx.SaveChanges();
-            }
+            await logic.Update(id, dto);
         }
     }
 }

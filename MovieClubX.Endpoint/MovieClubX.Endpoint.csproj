@@ -17,6 +17,11 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieClubX.Data\MovieClubX.Data.csproj" />
     <ProjectReference Include="..\MovieClubX.Entities\MovieClubX.Entities.csproj" />
+    <ProjectReference Include="..\MovieClubX.Logic\MovieClubX.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

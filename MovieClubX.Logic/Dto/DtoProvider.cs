@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
 using MovieClubX.Entities.Dto;
 using MovieClubX.Entities.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MovieClubX.Endpoint.Helpers
+namespace MovieClubX.Logic.Dto
 {
     public class DtoProvider
     {
-        public Mapper Mapper { get;  }
+        public Mapper Mapper { get; }
 
         public DtoProvider()
         {

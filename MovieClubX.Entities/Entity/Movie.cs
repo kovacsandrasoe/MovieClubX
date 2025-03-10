@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MovieClubX.Entities.Helpers;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieClubX.Entities.Entity
 {
-    public class Movie
+    public class Movie : IIdEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

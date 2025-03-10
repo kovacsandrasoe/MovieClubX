@@ -1,7 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using MovieClubX.Data;
-using MovieClubX.Endpoint.Helpers;
+using MovieClubX.Entities.Entity;
+using MovieClubX.Logic;
+using MovieClubX.Logic.Dto;
 
 namespace MovieClubX.Endpoint
 {
@@ -18,6 +20,8 @@ namespace MovieClubX.Endpoint
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddTransient(typeof(Repository<>));
+            builder.Services.AddTransient<MovieLogic>();
             builder.Services.AddTransient<DtoProvider>();
 
             builder.Services.AddDbContext<MovieClubContext>(opt => 
