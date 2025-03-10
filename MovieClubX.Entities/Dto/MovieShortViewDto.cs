@@ -11,6 +11,7 @@ namespace MovieClubX.Entities.Dto
         public string Id { get; set; } = "";
         public string Title { get; set; } = "";
         public double AvgRate { get; set; } = 0;
+        public string Slug { get; set; } = "";
 
     }
 }

@@ -12,6 +12,9 @@ namespace MovieClubX.Entities.Entity
         [StringLength(250)]
         public string Title { get; set; } = string.Empty;
 
+        [StringLength(250)]
+        public string Slug { get; set; } = string.Empty;
+
         public string Genre { get; set; } = string.Empty;
 
         [NotMapped]

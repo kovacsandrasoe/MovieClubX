@@ -12,7 +12,10 @@ namespace MovieClubX.Endpoint.Helpers
         {
             Mapper = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<MovieCreateUpdateDto, Movie>();
+                cfg.CreateMap<MovieCreateUpdateDto, Movie>()
+                    .AfterMap((src, dest) => dest.Slug = SlugGenerator.SlugGenerator.GenerateSlug(src.Title));
+
+
                 cfg.CreateMap<Movie, MovieViewDto>();
                 cfg.CreateMap<RateCreateDto, Rate>();
                 cfg.CreateMap<Rate, RateViewDto>();

@@ -12,6 +12,7 @@ namespace MovieClubX.Entities.Dto
         public string Id { get; set; } = "";
         public string Title { get; set; } = "";
         public string Genre { get; set; } = "";
+        public string Slug { get; set; } = "";
 
         public IEnumerable<RateViewDto>? Rates { get; set; }
 

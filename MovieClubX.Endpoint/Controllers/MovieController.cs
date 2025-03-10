@@ -27,13 +27,13 @@ namespace MovieClubX.Endpoint.Controllers
         [HttpGet]
         public IEnumerable<MovieViewDto> Get()
         {
-            //return ctx.Movies.Select(t => new MovieViewDto
-            //{
-            //    Id = t.Id,
-            //    Title = t.Title,
-            //    Rate = t.Rate
-            //});
             return ctx.Movies.Select(t => mapper.Map<MovieViewDto>(t));
+        }
+
+        [HttpGet("{slug}")]
+        public MovieViewDto Get(string slug)
+        {
+            return mapper.Map<MovieViewDto>(ctx.Movies.FirstOrDefault(t => t.Slug == slug));
         }
 
         [HttpGet("Short")]
@@ -45,17 +45,7 @@ namespace MovieClubX.Endpoint.Controllers
         [HttpPost]
         public void Post(MovieCreateUpdateDto dto)
         {
-            //var movie = new Movie
-            //{
-            //    Title = dto.Title,
-            //    Rate = dto.Rate
-            //};
             var movie = mapper.Map<Movie>(dto);
-
-            //barátságos url -> majd id-nak használjuk
-            //var slug = SlugGenerator.SlugGenerator.GenerateSlug(dto.Title);
-
-
             ctx.Movies.Add(movie);
             ctx.SaveChanges();
         }
