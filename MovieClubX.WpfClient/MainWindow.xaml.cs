@@ -19,20 +19,15 @@ namespace MovieClubX.WpfClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        public BindingList<MovieViewDto> Movies { get;set; } = new BindingList<MovieViewDto>();   
+        public ICollection<MovieViewDto> Movies { get;set; } = new BindingList<MovieViewDto>();   
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
             HttpClient c = new HttpClient();
             Client.Client client = new Client.Client("https://localhost:7215", c);
-            
-            var result = client.MovieAllAsync().GetAwaiter().GetResult();
 
-            foreach (var item in result)
-            {
-                Movies.Add(item);
-            }
+            this.Movies = client.MovieAllAsync().GetAwaiter().GetResult();
 
         }
     }
