@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MovieClubX.Data;
-using MovieClubX.Entities.Dto;
+using MovieClubX.Entities.Dto.Movie;
 using MovieClubX.Entities.Entity;
 using MovieClubX.Logic.Dto;
 
@@ -44,10 +44,10 @@ namespace MovieClubX.Logic
             await repository.DeleteByIdAsync(id);
         }
 
-        public async Task Update(string id, MovieCreateUpdateDto dto)
+        public async Task Update(string id, MovieCreateUpdateDto dto, string userid)
         {
             var movieToUpdate = repository.FindById(id);
-            if (movieToUpdate != null)
+            if (movieToUpdate != null && movieToUpdate.CreatorId == userid)
             {
                 mapper.Map(dto, movieToUpdate);
                 await repository.UpdateAsync(movieToUpdate);

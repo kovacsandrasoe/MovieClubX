@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MovieClubX.Entities.Dto.Rate;
 
-namespace MovieClubX.Entities.Dto
+namespace MovieClubX.Entities.Dto.Movie
 {
     public class MovieViewDto
     {

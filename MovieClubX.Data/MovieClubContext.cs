@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MovieClubX.Endpoint.Helpers;
 using MovieClubX.Entities.Entity;
 
 namespace MovieClubX.Data
@@ -8,6 +9,7 @@ namespace MovieClubX.Data
     {
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
 
         public MovieClubContext(DbContextOptions<MovieClubContext> opt) : base(opt)
         {

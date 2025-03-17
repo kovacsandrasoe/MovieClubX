@@ -21,5 +21,8 @@ namespace MovieClubX.Entities.Entity
         [NotMapped]
         public virtual ICollection<Rate>? Rates { get; set; }
 
+        [StringLength(250)]
+        public string CreatorId { get; set; } = string.Empty;
+
     }
 }

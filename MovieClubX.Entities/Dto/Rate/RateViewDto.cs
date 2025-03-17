@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieClubX.Entities.Dto
+namespace MovieClubX.Entities.Dto.Rate
 {
     public class RateViewDto
     {
