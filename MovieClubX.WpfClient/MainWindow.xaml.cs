@@ -1,4 +1,5 @@
-﻿using MovieClubX.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using MovieClubX.Client;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Text;
@@ -19,15 +20,33 @@ namespace MovieClubX.WpfClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private HubConnection connection;
         public ICollection<MovieViewDto> Movies { get;set; } = new BindingList<MovieViewDto>();   
         public MainWindow()
         {
             InitializeComponent();
+
+            connection = new HubConnectionBuilder()
+                .WithUrl("https://localhost:7215/movieHub") // A szerver SignalR URL-je
+                .WithAutomaticReconnect() // Automatikus újracsatlakozás
+                .Build();
+
+            connection.StartAsync().GetAwaiter().GetResult();
+
+
             this.DataContext = this;
             HttpClient c = new HttpClient();
             Client.Client client = new Client.Client("https://localhost:7215", c);
 
             this.Movies = client.MovieAllAsync().GetAwaiter().GetResult();
+
+            connection.On("newMovie", () =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("New movie added!");
+                });
+            });
 
         }
     }

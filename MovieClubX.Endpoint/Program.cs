@@ -67,6 +67,7 @@ namespace MovieClubX.Endpoint
             builder.Services.AddTransient(typeof(Repository<>));
             builder.Services.AddTransient<MovieLogic>();
             builder.Services.AddTransient<DtoProvider>();
+            builder.Services.AddTransient<MovieHub>();
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
@@ -101,7 +102,11 @@ namespace MovieClubX.Endpoint
                 .UseLazyLoadingProxies();
             });
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -110,13 +115,20 @@ namespace MovieClubX.Endpoint
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
-           
+
+            
 
             app.MapControllers();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<MovieHub>("/movieHub");
+            });
 
             app.Run();
         }

@@ -3,6 +3,7 @@ using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MovieClubX.Data;
 using MovieClubX.Endpoint.Helpers;
@@ -21,11 +22,13 @@ namespace MovieClubX.Endpoint.Controllers
     {
         MovieLogic logic;
         UserManager<AppUser> userManager;
+        IHubContext<MovieHub> movieHub;
 
-        public MovieController(MovieLogic logic, UserManager<AppUser> userManager)
+        public MovieController(MovieLogic logic, UserManager<AppUser> userManager, IHubContext<MovieHub> movieHub)
         {
             this.logic = logic;
             this.userManager = userManager;
+            this.movieHub = movieHub;
         }
 
         [HttpGet]
@@ -51,6 +54,7 @@ namespace MovieClubX.Endpoint.Controllers
         public async Task Post(MovieCreateUpdateDto dto)
         {
             await logic.Create(dto);
+            await movieHub.Clients.All.SendAsync("newMovie");
         }
 
         [HttpDelete("{id}")]
