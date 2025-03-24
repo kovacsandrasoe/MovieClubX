@@ -16,11 +16,13 @@ namespace MovieClubX.Endpoint.Controllers
     {
         private UserManager<AppUser> userManager;
         private RoleManager<IdentityRole> roleManager;
+        private IConfiguration configuration;
 
-        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -91,7 +93,7 @@ namespace MovieClubX.Endpoint.Controllers
         private JwtSecurityToken GenerateAccessToken(IEnumerable<Claim>? claims, int expiryInMinutes)
         {
             var signinKey = new SymmetricSecurityKey(
-                  Encoding.UTF8.GetBytes("NagyonhosszútitkosítókulcsNagyonhosszútitkosítókulcsNagyonhosszútitkosítókulcsNagyonhosszútitkosítókulcsNagyonhosszútitkosítókulcsNagyonhosszútitkosítókulcs"));
+                  Encoding.UTF8.GetBytes(configuration["jwt:key"] ?? throw new Exception("jwt:key not found in appsettings.json")));
 
             return new JwtSecurityToken(
                   issuer: "movieclub.com",
