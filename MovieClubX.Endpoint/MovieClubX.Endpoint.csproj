@@ -22,8 +22,4 @@
     <ProjectReference Include="..\MovieClubX.Logic\MovieClubX.Logic.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>

@@ -35,6 +35,11 @@ namespace MovieClubX.Logic
 
         public async Task Create(MovieCreateUpdateDto dto)
         {
+            //minta kivétel dobás
+            //if (dto.Title.Contains("asd"))
+            //{
+            //    throw new Exception("Title cannot contain asd");
+            //}
             var movie = mapper.Map<Movie>(dto);
             await repository.CreateAsync(movie);
         }
