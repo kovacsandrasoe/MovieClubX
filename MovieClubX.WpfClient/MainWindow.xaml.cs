@@ -18,9 +18,12 @@ namespace MovieClubX.WpfClient
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private HubConnection connection;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public ICollection<MovieViewDto> Movies { get;set; } = new BindingList<MovieViewDto>();   
         public MainWindow()
         {
@@ -44,7 +47,8 @@ namespace MovieClubX.WpfClient
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show("New movie added!");
+                    this.Movies = client.MovieAllAsync().GetAwaiter().GetResult();
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Movies)));
                 });
             });
 
