@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hangfire;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,12 +24,14 @@ namespace MovieClubX.Endpoint.Controllers
         MovieLogic logic;
         UserManager<AppUser> userManager;
         IHubContext<MovieHub> movieHub;
+        IBackgroundJobClient backgroundJobClient;
 
-        public MovieController(MovieLogic logic, UserManager<AppUser> userManager, IHubContext<MovieHub> movieHub)
+        public MovieController(MovieLogic logic, UserManager<AppUser> userManager, IHubContext<MovieHub> movieHub, IBackgroundJobClient backgroundJobClient)
         {
             this.logic = logic;
             this.userManager = userManager;
             this.movieHub = movieHub;
+            this.backgroundJobClient = backgroundJobClient;
         }
 
         [HttpGet]
@@ -54,7 +57,18 @@ namespace MovieClubX.Endpoint.Controllers
         public async Task Post(MovieCreateUpdateDto dto)
         {
             await logic.Create(dto);
-            await movieHub.Clients.All.SendAsync("newMovie");
+
+            //backgroundJobClient.Enqueue(() => Console.WriteLine("Ez egy háttérfeladat!"));
+
+            backgroundJobClient.Schedule(() => SendResponse(), TimeSpan.FromSeconds(15));
+
+            //await movieHub.Clients.All.SendAsync("newMovie");
+        }
+
+        [HttpGet("job")]
+        public void SendResponse()
+        {
+            movieHub.Clients.All.SendAsync("newMovie");
         }
 
         [HttpDelete("{id}")]

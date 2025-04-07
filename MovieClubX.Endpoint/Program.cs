@@ -1,4 +1,5 @@
 
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -102,6 +103,10 @@ namespace MovieClubX.Endpoint
                 .UseLazyLoadingProxies();
             });
 
+            builder.Services.AddHangfire(config =>
+                    config.UseSqlServerStorage("Server=(localdb)\\MSSQLLocalDB;Database=MovieClubDbXHangfire;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True"));
+            builder.Services.AddHangfireServer();
+
             builder.Services.AddSignalR();
 
             var app = builder.Build();
@@ -129,6 +134,8 @@ namespace MovieClubX.Endpoint
             {
                 endpoints.MapHub<MovieHub>("/movieHub");
             });
+
+            app.UseHangfireDashboard();
 
             app.Run();
         }
