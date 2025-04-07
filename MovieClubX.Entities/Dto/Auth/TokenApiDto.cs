@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace MovieClubX.Entities.Dto.Auth
 {
-    public class LoginResultDto
+    public class TokenApiDto
     {
         public string AccessToken { get; set; } = "";
-
-        public DateTime AccessTokenExpiration { get; set; }
-
         public string RefreshToken { get; set; } = "";
-
-        public DateTime RefreshTokenExpiration { get; set; }
     }
 }

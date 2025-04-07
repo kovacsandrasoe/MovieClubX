@@ -10,5 +10,8 @@ namespace MovieClubX.Endpoint.Helpers
 
         [StringLength(200)]
         public required string GivenName { get; set; } = "";
+
+        [StringLength(200)]
+        public required string RefreshToken { get; set; } = "";
     }
 }
